@@ -5,6 +5,7 @@ import org.organizer.ToDoList;
 import org.organizer.enums.CommandsEnums;
 import org.organizer.exceptions.InvalidCommandException;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class HelpAction {
@@ -20,9 +21,11 @@ public class HelpAction {
     }
 
     public void printAvailableCommands() {
-        for (CommandsEnums item : CommandsEnums.values()) {
-            System.out.println(item.getCommandName() + " --> " + item.getDescription());
-        }
+
+
+        Arrays.stream(CommandsEnums.values())
+                .forEach(command -> System.out.println(command.getCommandName() + " --> " + command.getDescription()));
+
         System.out.printf("%nEnter any command from available and press Enter to start working with Organizer console app: %n");
     }
 }

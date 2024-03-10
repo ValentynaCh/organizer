@@ -3,8 +3,10 @@ package org.organizer.parsing;
 import org.apache.commons.lang3.StringUtils;
 import org.organizer.enums.CommandsEnums;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,12 +26,11 @@ public class InputLineParsing {
 
 
     public String getCommand(String inputLine) {
-        for (CommandsEnums command : CommandsEnums.values()) {
-            if (inputLine.startsWith(command.getCommandName())) {
-                return command.getCommandName();
-            }
-        }
-        return StringUtils.EMPTY;
+        return Arrays.stream(CommandsEnums.values())
+                .filter(command -> inputLine.startsWith(command.getCommandName()))
+                .findFirst()
+                .map(CommandsEnums::getCommandName)
+                .orElse(StringUtils.EMPTY);
     }
 
     public String getCommandIndex(String inputLine) {
@@ -44,7 +45,6 @@ public class InputLineParsing {
     public String getCommandItem(String inputLine) {
         Matcher matcher = pattern.matcher(inputLine);
         if (matcher.find()) {
-            //return matcher.group(matcher.groupCount());
             return matcher.group(3);
         } else {
             return StringUtils.EMPTY;

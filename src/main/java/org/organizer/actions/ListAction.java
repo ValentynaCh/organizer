@@ -7,6 +7,8 @@ import org.organizer.exceptions.InvalidCommandException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
+
 
 public class ListAction {
     private ToDoList toDoList = ToDoList.getInstance();
@@ -14,15 +16,19 @@ public class ListAction {
     public void printList(ArrayList<String> toDoList, Map<String, String> parseCommandMap) throws InvalidCommandException {
         if (parseCommandMap.get("index").equals(StringUtils.EMPTY) && (parseCommandMap.get("item").equals(StringUtils.EMPTY))) {
             Map<Integer, String> toDoListWithIndex = new HashMap<>();
-            for (int i = 0; i < toDoList.size(); i++) {
-                toDoListWithIndex.put(i, toDoList.get(i));
-                System.out.println(i + 1 + " - " + toDoList.get(i));
-            }
+
+            IntStream.range(0, toDoList.size())
+                    .forEach(i -> {
+                        toDoListWithIndex.put(i, toDoList.get(i));
+                        System.out.println(i + 1 + " - " + toDoList.get(i));
+                    });
         } else {
             throw new InvalidCommandException();
         }
 
     }
+
+
 }
 
 

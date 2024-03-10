@@ -4,6 +4,7 @@ import org.organizer.actions.*;
 import org.organizer.enums.CommandsEnums;
 import org.organizer.exceptions.InvalidCommandException;
 import org.organizer.parsing.InputLineParsing;
+import org.organizer.utils.FileUtils;
 
 import java.util.Scanner;
 
@@ -18,14 +19,18 @@ public class App {
     private HelpAction helpAction = new HelpAction();
     private InputLineParsing inputLineParsing = new InputLineParsing();
     private ExitAction exitAction = new ExitAction();
+    private FileUtils fileUtils = new FileUtils();
 
 
     public static void main(String[] args) {
+        FileUtils fileUtils = new FileUtils();
 
         InputLineParsing inputLineParsing = new InputLineParsing();
         App app = new App();
         app.appHeader();
         String inputLine;
+        fileUtils.readFile();
+
         while (true) {
             try {
                 inputLine = app.getUserInput();
@@ -76,6 +81,7 @@ public class App {
                 helpAction.printHelp(inputLineParsing.getParseCommandMap(entryLine));
                 break;
             case EXIT:
+                fileUtils.writeToFile(toDoList.getToDoList());
                 exitAction.exitApp(inputLineParsing.getParseCommandMap(entryLine));
 
             default:
